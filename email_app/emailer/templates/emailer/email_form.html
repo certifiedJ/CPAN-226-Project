@@ -1,0 +1,107 @@
+{% extends 'emailer/base.html' %}
+
+{% block title %}Send Email{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Send Email</h2>
+    </div>
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="{{ form.sender.id_for_label }}" class="form-label">{{ form.sender.label }}</label>
+                    {{ form.sender }}
+                    {% if form.sender.errors %}
+                        <div class="text-danger">
+                            {% for error in form.sender.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <label for="{{ form.recipients.id_for_label }}" class="form-label">{{ form.recipients.label }}</label>
+                    {{ form.recipients }}
+                    <div class="form-text">{{ form.recipients.help_text }}</div>
+                    {% if form.recipients.errors %}
+                        <div class="text-danger">
+                            {% for error in form.recipients.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <label for="{{ form.cc.id_for_label }}" class="form-label">{{ form.cc.label }}</label>
+                    {{ form.cc }}
+                    <div class="form-text">{{ form.cc.help_text }}</div>
+                    {% if form.cc.errors %}
+                        <div class="text-danger">
+                            {% for error in form.cc.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <label for="{{ form.subject.id_for_label }}" class="form-label">{{ form.subject.label }}</label>
+                    {{ form.subject }}
+                    {% if form.subject.errors %}
+                        <div class="text-danger">
+                            {% for error in form.subject.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <label for="{{ form.body.id_for_label }}" class="form-label">{{ form.body.label }}</label>
+                    {{ form.body }}
+                    {% if form.body.errors %}
+                        <div class="text-danger">
+                            {% for error in form.body.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <label for="{{ form.attachments.id_for_label }}" class="form-label">{{ form.attachments.label }}</label>
+                    {{ form.attachments }}
+                    <div class="form-text">Hold Ctrl (or Cmd) to select multiple files</div>
+                    {% if form.attachments.errors %}
+                        <div class="text-danger">
+                            {% for error in form.attachments.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Send Email</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

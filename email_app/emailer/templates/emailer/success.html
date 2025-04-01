@@ -1,0 +1,15 @@
+{% extends 'emailer/base.html' %}
+
+{% block title %}Email Sent{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-success text-white">
+        <h2>Success!</h2>
+    </div>
+    <div class="card-body">
+        <p>Your email has been sent successfully.</p>
+        <a href="{% url 'email_form' %}" class="btn btn-primary">Send Another Email</a>
+    </div>
+</div>
+{% endblock %}

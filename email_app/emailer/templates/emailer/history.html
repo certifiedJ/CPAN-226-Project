@@ -1,0 +1,51 @@
+{% extends 'emailer/base.html' %}
+
+{% block title %}Email History{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Email History</h2>
+    </div>
+    <div class="card-body">
+        {% if emails %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Date/Time</th>
+                        <th>Subject</th>
+                        <th>Sender</th>
+                        <th>Recipients</th>
+                        <th>Attachments</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for email in emails %}
+                    <tr>
+                        <td>{{ email.sent_at|date:"M d, Y H:i" }}</td>
+                        <td>{{ email.subject }}</td>
+                        <td>{{ email.sender }}</td>
+                        <td>{{ email.recipients }}{% if email.cc %}<br><small class="text-muted">CC: {{ email.cc }}</small>{% endif %}</td>
+                        <td>
+                            {% if email.attachment_list %}
+                                <ul class="list-unstyled mb-0">
+                                {% for attachment in email.attachment_list %}
+                                    <li>{{ attachment }}</li>
+                                {% endfor %}
+                                </ul>
+                            {% else %}
+                                None
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p>No emails have been sent yet.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
