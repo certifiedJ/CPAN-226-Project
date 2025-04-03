@@ -1,6 +1,6 @@
-To run it, 
-cd email_app
-python manage.py startapp emailer
+To run it;
+cd email_app;
+python manage.py runserver;
 
 You also need to create .env file in the project root with below info.
 
