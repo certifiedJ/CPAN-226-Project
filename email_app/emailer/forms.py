@@ -4,7 +4,6 @@ from django.forms.widgets import ClearableFileInput
 class MultipleFileInput(forms.ClearableFileInput):
     allow_multiple_selected = True
 
-
 class MultipleFileField(forms.FileField):
     def __init__(self, *args, **kwargs):
         kwargs.setdefault("widget", MultipleFileInput())
@@ -17,7 +16,6 @@ class MultipleFileField(forms.FileField):
         else:
             result = single_file_clean(data, initial)
         return result
-
 
 class EmailForm(forms.Form):
     sender = forms.EmailField(
@@ -33,6 +31,12 @@ class EmailForm(forms.Form):
         label="CC",
         required=False,
         help_text="Enter CC email addresses separated by commas",
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    bcc = forms.CharField(
+        label="BCC",
+        required=False,
+        help_text="Enter BCC email addresses separated by commas",
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
     subject = forms.CharField(
@@ -51,28 +55,29 @@ class EmailForm(forms.Form):
     )
 
     def clean_recipients(self):
-        """Validate email addresses in recipients field"""
         recipients = self.cleaned_data.get('recipients', '')
         emails = [email.strip() for email in recipients.split(',') if email.strip()]
-
-        # Simple validation - could be enhanced
         for email in emails:
             if '@' not in email:
                 raise forms.ValidationError(f"Invalid email address: {email}")
-
         return recipients
 
     def clean_cc(self):
-        """Validate email addresses in CC field"""
         cc = self.cleaned_data.get('cc', '')
         if not cc:
             return cc
-
         emails = [email.strip() for email in cc.split(',') if email.strip()]
-
-        # Simple validation - could be enhanced
         for email in emails:
             if '@' not in email:
                 raise forms.ValidationError(f"Invalid email address: {email}")
-
         return cc
+
+    def clean_bcc(self):
+        bcc = self.cleaned_data.get('bcc', '')
+        if not bcc:
+            return bcc
+        emails = [email.strip() for email in bcc.split(',') if email.strip()]
+        for email in emails:
+            if '@' not in email:
+                raise forms.ValidationError(f"Invalid email address: {email}")
+        return bcc

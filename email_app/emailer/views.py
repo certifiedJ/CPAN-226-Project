@@ -13,23 +13,24 @@ def email_form(request):
             sender = form.cleaned_data['sender']
             recipients = form.cleaned_data['recipients']
             cc = form.cleaned_data['cc']
+            bcc = form.cleaned_data['bcc']  # Retrieve BCC field
             subject = form.cleaned_data['subject']
             body = form.cleaned_data['body']
 
-            # Handle multiple attachments - the form will now properly return a list
             attachments = form.cleaned_data['attachments']
             if not isinstance(attachments, list):
                 attachments = [attachments] if attachments else []
 
-            # Send the email
-            success, message, attachment_names = send_email(sender, recipients, cc, subject, body, attachments)
+            # Send the email with BCC included
+            success, message, attachment_names = send_email(sender, recipients, cc, bcc, subject, body, attachments)
 
             if success:
-                # Save to history
+                # Save to history including BCC
                 email_record = EmailHistory(
                     sender=sender,
                     recipients=recipients,
                     cc=cc,
+                    bcc=bcc,
                     subject=subject,
                     body=body,
                     attachment_names=json.dumps(attachment_names) if attachment_names else ""

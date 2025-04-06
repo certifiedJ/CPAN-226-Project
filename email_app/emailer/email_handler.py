@@ -6,7 +6,7 @@ from email.mime.application import MIMEApplication
 from os.path import basename
 from django.conf import settings
 
-def send_email(sender, recipients, cc, subject, body, attachments=None):
+def send_email(sender, recipients, cc, bcc, subject, body, attachments=None):
     """Send email using SMTP with support for multiple attachments"""
 
     # Create message container
@@ -23,7 +23,13 @@ def send_email(sender, recipients, cc, subject, body, attachments=None):
         cc_list = [email.strip() for email in cc.split(',') if email.strip()]
         msg['Cc'] = ', '.join(cc_list)
 
-    all_recipients = recipient_list + cc_list
+    # Process BCC if any (do not add a header for BCC)
+    bcc_list = []
+    if bcc:
+        bcc_list = [email.strip() for email in bcc.split(',') if email.strip()]
+
+    # Combine all recipients (BCC is hidden from the email header)
+    all_recipients = recipient_list + cc_list + bcc_list
 
     msg['Subject'] = subject
 
