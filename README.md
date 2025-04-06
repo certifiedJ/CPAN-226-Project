@@ -11,3 +11,5 @@ EMAIL_HOST_USER=your-email@gmail.com
 EMAIL_HOST_PASSWORD=your-app-password
 
 Replace the last 2 lines with your info, The password means Security > App Passwords (We created in lab3)
+
+In order to see the icons added, open intergrated terminal for email_app and run 'pip install django-widget-tweaks'

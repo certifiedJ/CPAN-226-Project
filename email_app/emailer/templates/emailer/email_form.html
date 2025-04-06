@@ -1,123 +1,163 @@
 {% extends 'emailer/base.html' %}
-
-{% block title %}Send Email{% endblock %}
+{% load widget_tweaks %}
+{% block title %}Compose Email{% endblock %}
 
 {% block content %}
-<div class="card">
-    <div class="card-header">
-        <h2>Send Email</h2>
-    </div>
-    <div class="card-body">
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <label for="{{ form.sender.id_for_label }}" class="form-label">{{ form.sender.label }}</label>
-                    {{ form.sender }}
-                    {% if form.sender.errors %}
-                        <div class="text-danger">
-                            {% for error in form.sender.errors %}
-                                {{ error }}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-            
-            <div class="row mb-3">
-                <div class="col-md-12">
-                    <label for="{{ form.recipients.id_for_label }}" class="form-label">{{ form.recipients.label }}</label>
-                    {{ form.recipients }}
-                    <div class="form-text">{{ form.recipients.help_text }}</div>
-                    {% if form.recipients.errors %}
-                        <div class="text-danger">
-                            {% for error in form.recipients.errors %}
-                                {{ error }}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-            
-            <div class="row mb-3">
-                <div class="col-md-12">
-                    <label for="{{ form.cc.id_for_label }}" class="form-label">{{ form.cc.label }}</label>
-                    {{ form.cc }}
-                    <div class="form-text">{{ form.cc.help_text }}</div>
-                    {% if form.cc.errors %}
-                        <div class="text-danger">
-                            {% for error in form.cc.errors %}
-                                {{ error }}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-            
-            <!-- Add the BCC field here -->
-            <div class="row mb-3">
-                <div class="col-md-12">
-                    <label for="{{ form.bcc.id_for_label }}" class="form-label">{{ form.bcc.label }}</label>
-                    {{ form.bcc }}
-                    <div class="form-text">{{ form.bcc.help_text }}</div>
-                    {% if form.bcc.errors %}
-                        <div class="text-danger">
-                            {% for error in form.bcc.errors %}
-                                {{ error }}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-            
-            <div class="row mb-3">
-                <div class="col-md-12">
-                    <label for="{{ form.subject.id_for_label }}" class="form-label">{{ form.subject.label }}</label>
-                    {{ form.subject }}
-                    {% if form.subject.errors %}
-                        <div class="text-danger">
-                            {% for error in form.subject.errors %}
-                                {{ error }}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-            
-            <div class="row mb-3">
-                <div class="col-md-12">
-                    <label for="{{ form.body.id_for_label }}" class="form-label">{{ form.body.label }}</label>
-                    {{ form.body }}
-                    {% if form.body.errors %}
-                        <div class="text-danger">
-                            {% for error in form.body.errors %}
-                                {{ error }}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-            
-            <div class="row mb-3">
-                <div class="col-md-12">
-                    <label for="{{ form.attachments.id_for_label }}" class="form-label">{{ form.attachments.label }}</label>
-                    {{ form.attachments }}
-                    <div class="form-text">Hold Ctrl (or Cmd) to select multiple files</div>
-                    {% if form.attachments.errors %}
-                        <div class="text-danger">
-                            {% for error in form.attachments.errors %}
-                                {{ error }}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-            
-            <div class="d-grid gap-2">
-                <button type="submit" class="btn btn-primary">Send Email</button>
-            </div>
+<div class="row">
+  <div class="col-md-8 offset-md-2">
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white">
+        <h5 class="card-title mb-0">Compose Email</h5>
+      </div>
+      <div class="card-body">
+        <form id="emailForm" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          
+          <!-- Sender -->
+          <div class="mb-3">
+            <label for="{{ form.sender.id_for_label }}" class="form-label">
+              <i class="bi bi-person-fill"></i> {{ form.sender.label }}
+            </label>
+            {{ form.sender|add_class:"form-control" }}
+            {% if form.sender.errors %}
+              <div class="text-danger">
+                {% for error in form.sender.errors %}
+                  {{ error }}
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+
+          <!-- Recipients -->
+          <div class="mb-3">
+            <label for="{{ form.recipients.id_for_label }}" class="form-label">
+              <i class="bi bi-envelope-fill"></i> {{ form.recipients.label }}
+            </label>
+            {{ form.recipients|add_class:"form-control" }}
+            <small class="form-text">{{ form.recipients.help_text }}</small>
+            {% if form.recipients.errors %}
+              <div class="text-danger">
+                {% for error in form.recipients.errors %}
+                  {{ error }}
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+
+          <!-- CC -->
+          <div class="mb-3">
+            <label for="{{ form.cc.id_for_label }}" class="form-label">
+              <i class="bi bi-people-fill"></i> {{ form.cc.label }}
+            </label>
+            {{ form.cc|add_class:"form-control" }}
+            <small class="form-text">{{ form.cc.help_text }}</small>
+            {% if form.cc.errors %}
+              <div class="text-danger">
+                {% for error in form.cc.errors %}
+                  {{ error }}
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+
+          <!-- BCC -->
+          <div class="mb-3">
+            <label for="{{ form.bcc.id_for_label }}" class="form-label">
+              <i class="bi bi-eye-slash-fill"></i> {{ form.bcc.label }}
+            </label>
+            {{ form.bcc|add_class:"form-control" }}
+            <small class="form-text">{{ form.bcc.help_text }}</small>
+            {% if form.bcc.errors %}
+              <div class="text-danger">
+                {% for error in form.bcc.errors %}
+                  {{ error }}
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+
+          <!-- Subject -->
+          <div class="mb-3">
+            <label for="{{ form.subject.id_for_label }}" class="form-label">
+              <i class="bi bi-chat-left-text-fill"></i> {{ form.subject.label }}
+            </label>
+            {{ form.subject|add_class:"form-control" }}
+            {% if form.subject.errors %}
+              <div class="text-danger">
+                {% for error in form.subject.errors %}
+                  {{ error }}
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+
+          <!-- Body -->
+          <div class="mb-3">
+            <label for="{{ form.body.id_for_label }}" class="form-label">
+              <i class="bi bi-pencil-fill"></i> {{ form.body.label }}
+            </label>
+            {{ form.body|add_class:"form-control" }}
+            {% if form.body.errors %}
+              <div class="text-danger">
+                {% for error in form.body.errors %}
+                  {{ error }}
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+
+          <!-- Attachments -->
+          <div class="mb-3">
+            <label for="{{ form.attachments.id_for_label }}" class="form-label">
+              <i class="bi bi-paperclip"></i> {{ form.attachments.label }}
+            </label>
+            {{ form.attachments|add_class:"form-control" }}
+            <small class="form-text">Hold Ctrl (or Cmd) to select multiple files</small>
+            {% if form.attachments.errors %}
+              <div class="text-danger">
+                {% for error in form.attachments.errors %}
+                  {{ error }}
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+
+          <!-- Trigger Modal Button (instead of form submit) -->
+          <div class="d-grid">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmModal">
+              <i class="bi bi-send-fill"></i> Send Email
+            </button>
+          </div>
         </form>
+      </div>
     </div>
+  </div>
 </div>
+
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmModalLabel">Confirm Send</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to send this email?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" id="confirmButton" class="btn btn-success">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript to submit the form after confirmation -->
+<script>
+  document.getElementById('confirmButton').addEventListener('click', function() {
+    // Submit the form when the user confirms in the modal
+    document.getElementById('emailForm').submit();
+  });
+</script>
 {% endblock %}
