@@ -13,7 +13,7 @@ def email_form(request):
             sender = form.cleaned_data['sender']
             recipients = form.cleaned_data['recipients']
             cc = form.cleaned_data['cc']
-            bcc = form.cleaned_data['bcc']  # Retrieve BCC field
+            bcc = form.cleaned_data['bcc']
             subject = form.cleaned_data['subject']
             body = form.cleaned_data['body']
 

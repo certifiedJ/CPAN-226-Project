@@ -28,7 +28,7 @@ def send_email(sender, recipients, cc, bcc, subject, body, attachments=None):
     if bcc:
         bcc_list = [email.strip() for email in bcc.split(',') if email.strip()]
 
-    # Combine all recipients (BCC is hidden from the email header)
+    # Combine all recipients
     all_recipients = recipient_list + cc_list + bcc_list
 
     msg['Subject'] = subject
@@ -36,7 +36,7 @@ def send_email(sender, recipients, cc, bcc, subject, body, attachments=None):
     # Attach body
     msg.attach(MIMEText(body, 'plain'))
 
-    # Attach files if provided
+    # Attach files
     attachment_names = []
     if attachments:
         for attachment in attachments:
